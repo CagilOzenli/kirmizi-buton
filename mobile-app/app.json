@@ -1,0 +1,37 @@
+{
+  "expo": {
+    "name": "Kirmizi Buton",
+    "slug": "kirmizi-buton",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "userInterfaceStyle": "dark",
+    "icon": "./assets/icon.png",
+    "splash": {
+      "backgroundColor": "#16181C"
+    },
+    "ios": {
+      "supportsTablet": false,
+      "bundleIdentifier": "com.seninadin.kirmizibuton"
+    },
+    "android": {
+      "package": "com.seninadin.kirmizibuton",
+      "permissions": [
+        "NOTIFICATIONS"
+      ]
+    },
+    "plugins": [
+      [
+        "expo-notifications",
+        {
+          "icon": "./assets/notification-icon.png",
+          "color": "#C81E3A"
+        }
+      ]
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "ada3c38a-1043-4009-9597-db1eafed133a"
+      }
+    }
+  }
+}
