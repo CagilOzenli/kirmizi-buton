@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "597933800259",
+    "project_id": "racismbutton",
+    "storage_bucket": "racismbutton.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:597933800259:android:a1c6fa731b0278296ecdf6",
+        "android_client_info": {
+          "package_name": "com.seninadin.kirmizibuton"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDOXMhPTNdYAhfmBuluC3noNqIt5PDSB_E"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

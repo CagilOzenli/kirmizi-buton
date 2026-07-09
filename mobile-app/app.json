@@ -14,10 +14,17 @@
     },
     "android": {
       "package": "com.seninadin.kirmizibuton",
-      "permissions": ["NOTIFICATIONS"]
+      "permissions": [
+        "NOTIFICATIONS"
+      ]
     },
     "plugins": [
       "expo-notifications"
-    ]
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "ada3c38a-1043-4009-9597-db1eafed133a"
+      }
+    }
   }
 }

@@ -10,6 +10,7 @@ import {
   Alert,
   SafeAreaView,
 } from 'react-native';
+import Constants from 'expo-constants';
 import * as Notifications from 'expo-notifications';
 import * as Device from 'expo-device';
 import { initializeApp } from 'firebase/app';
@@ -60,51 +61,61 @@ export default function App() {
   }, []);
 
   async function registerForPush() {
-    if (!name.trim()) {
-      Alert.alert('Ad gerekli', 'Lütfen önce adını yaz.');
-      return;
-    }
-    if (!Device.isDevice) {
-      Alert.alert('Fiziksel cihaz gerekli', 'Bildirimler simülatörde/emülatörde çalışmaz.');
-      return;
-    }
+    try {
+      if (!name.trim()) {
+        Alert.alert('Ad gerekli', 'Lütfen önce adını yaz.');
+        return;
+      }
+      if (!Device.isDevice) {
+        Alert.alert('Fiziksel cihaz gerekli', 'Bildirimler simülatörde/emülatörde çalışmaz.');
+        return;
+      }
 
-    const { status: existingStatus } = await Notifications.getPermissionsAsync();
-    let finalStatus = existingStatus;
-    if (existingStatus !== 'granted') {
-      const { status } = await Notifications.requestPermissionsAsync();
-      finalStatus = status;
-    }
-    if (finalStatus !== 'granted') {
-      Alert.alert('İzin gerekli', 'Bildirim izni vermeden uygulama çalışmaz.');
-      return;
-    }
+      const { status: existingStatus } = await Notifications.getPermissionsAsync();
+      let finalStatus = existingStatus;
+      if (existingStatus !== 'granted') {
+        const { status } = await Notifications.requestPermissionsAsync();
+        finalStatus = status;
+      }
+      if (finalStatus !== 'granted') {
+        Alert.alert('İzin gerekli', 'Bildirim izni vermeden uygulama çalışmaz.');
+        return;
+      }
 
-    if (Platform.OS === 'android') {
-      await Notifications.setNotificationChannelAsync('default', {
-        name: 'default',
-        importance: Notifications.AndroidImportance.MAX,
+      if (Platform.OS === 'android') {
+        await Notifications.setNotificationChannelAsync('default', {
+          name: 'default',
+          importance: Notifications.AndroidImportance.MAX,
+        });
+      }
+
+      const tokenData = await Notifications.getExpoPushTokenAsync({
+        projectId: Constants.expoConfig.extra.eas.projectId,
       });
+      pushTokenRef.current = tokenData.data;
+
+      await setDoc(doc(db, 'devices', tokenData.data), {
+        name: name.trim(),
+        token: tokenData.data,
+        updatedAt: serverTimestamp(),
+      });
+
+      setRegistered(true);
+    } catch (err) {
+      Alert.alert('Hata', String(err));
     }
-
-    const tokenData = await Notifications.getExpoPushTokenAsync();
-    pushTokenRef.current = tokenData.data;
-
-    await setDoc(doc(db, 'devices', tokenData.data), {
-      name: name.trim(),
-      token: tokenData.data,
-      updatedAt: serverTimestamp(),
-    });
-
-    setRegistered(true);
   }
 
   async function handlePress() {
-    await addDoc(collection(db, 'presses'), {
-      name: name.trim(),
-      senderToken: pushTokenRef.current,
-      createdAt: serverTimestamp(),
-    });
+    try {
+      await addDoc(collection(db, 'presses'), {
+        name: name.trim(),
+        senderToken: pushTokenRef.current,
+        createdAt: serverTimestamp(),
+      });
+    } catch (err) {
+      Alert.alert('Hata', String(err));
+    }
   }
 
   if (!registered) {
