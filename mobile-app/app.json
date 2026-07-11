@@ -13,11 +13,10 @@
       "bundleIdentifier": "com.seninadin.kirmizibuton"
     },
     "android": {
-      "package": "com.seninadin.kirmizibuton",
-      "permissions": [
-        "NOTIFICATIONS"
-      ]
-    },
+  "package": "com.seninadin.kirmizibuton",
+  "permissions": ["NOTIFICATIONS"],
+  "googleServicesFile": "./google-services.json"
+},
     "plugins": [
       "expo-notifications"
     ],
